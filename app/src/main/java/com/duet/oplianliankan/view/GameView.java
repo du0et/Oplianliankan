@@ -99,6 +99,7 @@ public class GameView extends View {
         this.selectedPiece = piece;
     }
 
+    //开始游戏
     public void startGame()
     {
         this.gameService.start();
