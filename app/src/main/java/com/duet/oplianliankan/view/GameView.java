@@ -16,6 +16,7 @@ import com.duet.oplianliankan.board.GameService;
 import com.duet.oplianliankan.object.LinkInfo;
 import com.duet.oplianliankan.util.ImageUtil;
 
+import java.util.List;
 import java.util.jar.Attributes;
 
 /**

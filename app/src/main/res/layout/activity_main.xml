@@ -7,7 +7,7 @@
 
     <!--游戏主界面自定义组件 -->
     <com.duet.oplianliankan.view.GameView
-        android:id="@+id/ganmeView"
+        android:id="@+id/gameView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <LinearLayout
