@@ -1,77 +1,81 @@
 package com.duet.oplianliankan;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.duet.oplianliankan.board.GameService;
+import com.duet.oplianliankan.board.impl.GameServiceImpl;
 import com.duet.oplianliankan.object.GameConf;
+import com.duet.oplianliankan.object.LinkInfo;
 import com.duet.oplianliankan.view.GameView;
 import com.duet.oplianliankan.view.Piece;
 
 import java.util.Timer;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
+import java.util.TimerTask;
 
 
-public class MainActivity extends ActionBarActivity {
-    //游戏配置对象
-    private GameConf config;
-    //游戏业务逻辑接口
-    private GameService gameService;
-    //游戏界面
-    private GameView gameView;
-    //开始按钮
-    private Button startButton;
-    //记录剩余时间的TextView
-    private TextView timeTextView;
-    //失败后弹出的对话框
-    private AlertDialog.Builder lostDialog;
-    //游戏胜利后的对话框
-    private AlertDialog.Builder successDialog;
-    //定时器
-    private Timer timer=new Timer();
-    //记录游戏剩余时间
-    private int gameTime;
-    //记录是否处于游戏状态
-    private boolean isPlaying;
-    //播放音效的SoundPool
-    SoundPool soundPool=new SoundPool(2, AudioManager.STREAM_SYSTEM,8);
-    int dis;
-    //记录已经选中的方块
-    private Piece selected=null;
-    private Handler handler=new Handler() {
-        public void handleMessage(Message msg)
-        {
-            switch (msg.what)
-            {
-                case 0x123:
-                    timeTextView.setText("剩余时间："+gameTime);
-                    gameTime--;
-                    if(gameTime<0)
-                    {
-                        stopTimer();
-                        isPlaying=false;
-                        lostDialog.show();
-                        return;
-                    }
-                    break;
-            }
-        }
-    };
+public class MainActivity extends Activity
+{
+	// 游戏配置对象
+	private GameConf config;
+	// 游戏业务逻辑接口
+	private GameService gameService;
+	// 游戏界面
+	private GameView gameView;
+	// 开始按钮
+	private Button startButton;
+	// 记录剩余时间的TextView
+	private TextView timeTextView;
+	// 失败后弹出的对话框
+	private AlertDialog.Builder lostDialog;
+	// 游戏胜利后的对话框
+	private AlertDialog.Builder successDialog;
+	// 定时器
+	private Timer timer = new Timer();
+	// 记录游戏的剩余时间
+	private int gameTime;
+	// 记录是否处于游戏状态
+	private boolean isPlaying;
+	// 振动处理类
+	private Vibrator vibrator;
+	// 记录已经选中的方块
+	private Piece selected = null;
+	private Handler handler = new Handler()
+	{
+		public void handleMessage(Message msg)
+		{
+			switch (msg.what)
+			{
+				case 0x123:
+					timeTextView.setText("剩余时间： " + gameTime);
+					gameTime--;
+					// 时间小于0, 游戏失败
+					if (gameTime < 0)
+					{
+						stopTimer();
+						// 更改游戏的状态
+						isPlaying = false;
+						lostDialog.show();
+						return;
+					}
+					break;
+			}
+		}
+	};
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
@@ -87,7 +91,8 @@ public class MainActivity extends ActionBarActivity {
         //获取开始按钮
         startButton=(Button)findViewById(R.id.startButton);
         //初始化音效
-        dis=soundPool.load(this, android.R.raw.dis,1);
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        gameService = new GameServiceImpl(this.config);
         gameView.setGameService(gameService);
         //为开始按钮的单击事件绑定事件监听器
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +102,7 @@ public class MainActivity extends ActionBarActivity {
             }
         });
         //为游戏区域的触碰时间绑定监听器
-        gameView.setOnTouchListener(new View.OnTouchListener()
+        this.gameView.setOnTouchListener(new View.OnTouchListener()
         {
             public boolean onTouch(View view, MotionEvent e)
             {

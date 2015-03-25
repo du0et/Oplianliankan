@@ -1,5 +1,7 @@
 package com.duet.oplianliankan.view;
 
+import android.graphics.Point;
+
 /**
  * Created by Amber on 2015/3/22.
  */
@@ -66,6 +68,14 @@ public class Piece {
     public void setImage(PieceImage image)
     {
         this.image = image;
+    }
+
+    // 获取该Piece的中心
+    public Point getCenter()
+    {
+        return new Point(getImage().getImage().getWidth() / 2
+                + getBeginX(), getBeginY()
+                + getImage().getImage().getHeight() / 2);
     }
 
     public boolean isSameImage(Piece other)

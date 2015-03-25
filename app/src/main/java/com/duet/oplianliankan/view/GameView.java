@@ -33,7 +33,7 @@ public class GameView extends View {
         super(context,attrs);
         this.paint=new Paint();
         //使用位图平铺作为连接线条
-        this.paint.setShader(new BitmapShader(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.dark_header), Shader.TileMode.REPEAT,Shader.TileMode.REPEAT));
+        //this.paint.setShader(new BitmapShader(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.dark_header), Shader.TileMode.REPEAT,Shader.TileMode.REPEAT));
         // 设置连接线的颜色
         this.paint.setColor(Color.RED);
         // 设置连接线的粗细

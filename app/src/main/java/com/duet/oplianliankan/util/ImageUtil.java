@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.duet.oplianliankan.view.Piece;
+import com.duet.oplianliankan.R;
 import com.duet.oplianliankan.view.PieceImage;
 
 import java.lang.reflect.Field;
@@ -17,28 +18,34 @@ import java.util.Random;
 /**
  * Created by Amber on 2015/3/22.
  */
-public class ImageUtil {
-    private static List<Integer> imageValues=getImageValues();
-    public static List<Integer> getImageValues()
-    {
-        try
-        {
-            Field[] drawableFields= android.R.drawable.class.getFields();
-            List<Integer> resourceValues=new ArrayList<Integer>();
-            for (Field field:drawableFields)
-            {
-                if (field.getName().indexOf("p_")!=-1)
-                {
-                    resourceValues.add(field.getInt(android.R.drawable.class));
-                }
-            }
-            return resourceValues;
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
-    }
+public class ImageUtil
+{
+	// 保存所有连连看图片资源值(int类型)
+	private static List<Integer> imageValues = getImageValues();
+
+	//获取连连看所有图片的ID（约定所有图片ID以p_开头）
+	public static List<Integer> getImageValues()
+	{
+		try
+		{
+			// 得到R.drawable所有的属性, 即获取drawable目录下的所有图片
+			Field[] drawableFields = R.drawable.class.getFields();
+			List<Integer> resourceValues = new ArrayList<Integer>();
+			for (Field field : drawableFields)
+			{
+				// 如果该Field的名称以p_开头
+				if (field.getName().indexOf("p_") != -1)
+				{
+					resourceValues.add(field.getInt(R.drawable.class));
+				}
+			}
+			return resourceValues;
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
+	}
 
     public static List<Integer> getRandomValues(List<Integer> sourceValues,int size)
     {
@@ -85,12 +92,11 @@ public class ImageUtil {
         return result;
     }
 
-    public static Bitmap getSelectImage(Context context)
-    {
-        Bitmap bm=BitmapFactory.decodeResource(context.getResources(), android.R.drawable.selected);
-        return bm;
-    }
-
-
-
+	// 获取选中标识的图片
+	public static Bitmap getSelectImage(Context context)
+	{
+		Bitmap bm = BitmapFactory.decodeResource(context.getResources(),
+			R.drawable.selected);
+		return bm;
+	}
 }

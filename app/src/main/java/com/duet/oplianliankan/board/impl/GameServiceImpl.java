@@ -8,19 +8,18 @@ import java.util.Map;
 import java.util.Random;
 
 import com.duet.oplianliankan.board.GameService;
-import com.duet.oplianliankan.board
-import org.crazyit.link.board.AbstractBoard;
-import org.crazyit.link.board.GameService;
-import org.crazyit.link.object.GameConf;
-import org.crazyit.link.object.LinkInfo;
-import org.crazyit.link.view.Piece;
+import com.duet.oplianliankan.board.AbstractBoard;
+import com.duet.oplianliankan.object.GameConf;
+import com.duet.oplianliankan.object.LinkInfo;
+import com.duet.oplianliankan.view.Piece;
+
 
 import android.graphics.Point;
 
 /**
  * Created by duet on 2015/3/23.
  */
-public class GameServicelmpl implements GameService {
+public class GameServiceImpl implements GameService {
     // 定义一个Piece[][]数组，只提供getter方法
     private Piece[][] pieces;
     // 游戏配置对象
